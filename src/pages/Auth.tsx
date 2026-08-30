@@ -133,7 +133,7 @@ export default function Auth() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3">
             <button 
               type="button" 
               onClick={async () => {
@@ -148,9 +148,6 @@ export default function Auth() {
               className="flex items-center justify-center gap-2 bg-transparent border border-white/10 hover:bg-white/5 rounded-lg py-2.5 transition-colors text-sm font-medium text-white/80"
             >
               Google
-            </button>
-            <button type="button" className="flex items-center justify-center gap-2 bg-transparent border border-white/10 hover:bg-white/5 rounded-lg py-2.5 transition-colors text-sm font-medium text-white/80">
-              Github
             </button>
           </div>
           
