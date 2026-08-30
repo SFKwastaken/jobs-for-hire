@@ -29,7 +29,7 @@ export async function runJobDiscoveryPipeline(
       const adzunaJobs = await searchAdzuna(countryCode, profile.roles[0] || 'remote worker', profile.remote ? 'remote' : profile.location?.city || '');
       
       const adzunaMapped: SearchResult[] = adzunaJobs.map(job => ({
-        title: job.title,
+        title: job.title || 'Unknown Title',
         url: job.url || '',
         description: job.description || '',
         source: 'Adzuna'

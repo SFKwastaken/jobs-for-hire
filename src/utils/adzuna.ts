@@ -13,8 +13,8 @@ export interface SearchFilters {
   datePosted: string;
 }
 
-const ADZUNA_APP_ID = typeof process !== 'undefined' ? (process.env.VITE_ADZUNA_APP_ID || (import.meta as any).env?.VITE_ADZUNA_APP_ID) : (import.meta as any).env?.VITE_ADZUNA_APP_ID;
-const ADZUNA_APP_KEY = typeof process !== 'undefined' ? (process.env.VITE_ADZUNA_APP_KEY || (import.meta as any).env?.VITE_ADZUNA_APP_KEY) : (import.meta as any).env?.VITE_ADZUNA_APP_KEY;
+const ADZUNA_APP_ID = (import.meta as any).env?.VITE_ADZUNA_APP_ID;
+const ADZUNA_APP_KEY = (import.meta as any).env?.VITE_ADZUNA_APP_KEY;
 const BASE_URL = 'https://api.adzuna.com/v1/api/jobs';
 
 /**
@@ -291,7 +291,7 @@ export async function executeJobSearch(filters: SearchFilters): Promise<Processe
   
   for (const job of allResults) {
     // Normalize key for deduplication
-    const key = `${job.title.toLowerCase().trim()}|${job.company.toLowerCase().trim()}`;
+    const key = `${job.title?.toLowerCase().trim() || ''}|${job.company?.toLowerCase().trim() || ''}`;
     if (!seen.has(key)) {
       seen.add(key);
       uniqueJobs.push(job);

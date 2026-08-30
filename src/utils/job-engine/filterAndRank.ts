@@ -137,13 +137,13 @@ export async function evaluateJobMatches(profile: SearchProfile, jobs: Job[], on
   
   if (hasSalaryRequirement) {
     finalJobs = processedJobs.filter(pj => {
-      if (!pj.raw.salary) return true; // Accept jobs with undisclosed salaries
+      if (!pj.raw?.salary) return true; // Accept jobs with undisclosed salaries
       
       const req = profile.salaryRequirements;
-      const jobMin = pj.raw.salary.min || 0;
+      const jobMin = pj.raw!.salary!.min || 0;
       let jobAnnual = jobMin;
-      if (pj.raw.salary.period === 'hour') jobAnnual = jobMin * 2000;
-      if (pj.raw.salary.period === 'month') jobAnnual = jobMin * 12;
+      if (pj.raw!.salary!.period === 'hour') jobAnnual = jobMin * 2000;
+      if (pj.raw!.salary!.period === 'month') jobAnnual = jobMin * 12;
 
       let reqAnnual = 0;
       let reqCurrency = 'USD';
@@ -152,7 +152,7 @@ export async function evaluateJobMatches(profile: SearchProfile, jobs: Job[], on
       else if (req?.hourly?.min) { reqAnnual = req.hourly.min * 2000; reqCurrency = req.hourly.currency || 'USD'; }
 
       // If currencies don't match, don't strictly filter out
-      if (pj.raw.salary.currency && reqCurrency && pj.raw.salary.currency !== reqCurrency) {
+      if (pj.raw!.salary!.currency && reqCurrency && pj.raw!.salary!.currency !== reqCurrency) {
         return true;
       }
 
@@ -162,5 +162,5 @@ export async function evaluateJobMatches(profile: SearchProfile, jobs: Job[], on
   }
   
   // Sort by matchScore descending
-  return finalJobs.sort((a, b) => b.analysis.matchScore - a.analysis.matchScore);
+  return finalJobs.sort((a, b) => b.analysis!.matchScore - a.analysis!.matchScore);
 }

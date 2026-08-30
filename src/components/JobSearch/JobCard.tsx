@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import type { ProcessedJob } from '../../utils/job-engine/types';
 
 interface JobCardProps {
-  job: any; // Using any because the UI uses an extended version of ProcessedJob from adzuna.ts
+  job: ProcessedJob;
   hideMatchScore?: boolean;
 }
 

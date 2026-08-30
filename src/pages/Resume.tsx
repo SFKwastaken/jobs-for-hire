@@ -29,7 +29,7 @@ export default function Resume() {
   }, [currentUser]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (currentState === 'generating') {
       const messages = [
         "Analyzing your profile and experience...",

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Plus, Trash2, ChevronDown } from 'lucide-react';
-import type { ResumeData, ResumeSection } from '../../types/resume';
+import type { ResumeData } from '../../types/resume';
 
 interface Props {
   data: ResumeData;
@@ -45,10 +45,13 @@ export function ContentEditor({ data, onChange }: Props) {
         {
           company: 'New Company',
           jobTitle: 'Job Title',
+          location: '',
+          description: '',
           startDate: '2025',
           endDate: 'Present',
           current: true,
-          achievements: []
+          achievements: [],
+          id: Date.now().toString()
         }
       ]
     });
@@ -63,8 +66,10 @@ export function ContentEditor({ data, onChange }: Props) {
           institution: 'University',
           degree: 'Bachelor',
           field: 'Field of Study',
+          description: '',
           startDate: '2020',
-          endDate: '2024'
+          endDate: '2024',
+          id: Date.now().toString()
         }
       ]
     });
@@ -78,7 +83,9 @@ export function ContentEditor({ data, onChange }: Props) {
         {
           name: 'New Project',
           description: '',
-          technologies: []
+          technologies: [],
+          url: '',
+          id: Date.now().toString()
         }
       ]
     });

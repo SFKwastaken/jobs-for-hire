@@ -15,7 +15,7 @@ export function deduplicateJobs(jobs: ProcessedJob[]): ProcessedJob[] {
     }
     
     // Fallback key: Company + Title
-    const fallbackKey = `${job.company.toLowerCase()}-${job.title.toLowerCase()}`;
+    const fallbackKey = `${job.company?.toLowerCase() || ''}-${job.title?.toLowerCase() || ''}`;
     if (!unique.has(fallbackKey)) {
       unique.set(fallbackKey, job);
     }
@@ -34,7 +34,7 @@ export function rankJobsForProfile(jobs: ProcessedJob[], profile: UserProfile): 
     const checks: string[] = [];
     const warnings: string[] = [];
 
-    const jobTitle = job.title.toLowerCase();
+    const jobTitle = job.title?.toLowerCase() || '';
     const jobDesc = job.description?.toLowerCase() || '';
 
     // 1. Role Match (Heavy weight)
@@ -62,7 +62,7 @@ export function rankJobsForProfile(jobs: ProcessedJob[], profile: UserProfile): 
     }
 
     // 3. Location/Remote Preference
-    const isRemote = job.location.toLowerCase().includes('remote');
+    const isRemote = job.location?.toLowerCase().includes('remote') || false;
     if (profile.work_preference?.toLowerCase().includes('remote')) {
       if (isRemote) {
         score += 10;
@@ -78,5 +78,5 @@ export function rankJobsForProfile(jobs: ProcessedJob[], profile: UserProfile): 
     job.matchWarnings = warnings;
 
     return job;
-  }).sort((a, b) => b.matchScore - a.matchScore);
+  }).sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
 }

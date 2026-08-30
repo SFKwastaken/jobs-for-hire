@@ -13,7 +13,7 @@ import JobCard from './components/JobSearch/JobCard';
 const JOB_ROTATIONS = [
   {
     company: "Acme Corp",
-    role: "Frontend Developer",
+    title: "Frontend Developer",
     location: "Remote",
     type: "Full-time",
     salary: "$12–15",
@@ -27,7 +27,7 @@ const JOB_ROTATIONS = [
   },
   {
     company: "Nova Studios",
-    role: "Video Editor",
+    title: "Video Editor",
     location: "Remote",
     type: "Contract",
     salary: "$30–45",
@@ -41,7 +41,7 @@ const JOB_ROTATIONS = [
   },
   {
     company: "Fintech Solutions",
-    role: "Senior Data Scientist",
+    title: "Senior Data Scientist",
     location: "Hybrid",
     type: "Full-time",
     salary: "$140k",
@@ -55,7 +55,7 @@ const JOB_ROTATIONS = [
   },
   {
     company: "Oasis Health",
-    role: "Registered Nurse",
+    title: "Registered Nurse",
     location: "On-site",
     type: "Full-time",
     salary: "$85k",
@@ -786,7 +786,7 @@ export default function App() {
                         <div className="flex items-center gap-3 text-white/50 text-sm mb-3 font-medium uppercase tracking-wider">
                           <span className="w-2 h-2 rounded-full bg-white/80 shadow-[0_0_10px_rgba(255,255,255,0.8)]"></span> {currentJob.company}
                         </div>
-                        <h3 className="text-3xl font-semibold tracking-tight text-white mb-2">{currentJob.role}</h3>
+                        <h3 className="text-3xl font-semibold tracking-tight text-white mb-2">{currentJob.title}</h3>
                         <div className="text-white/40 text-sm flex items-center gap-2">
                           <Globe className="w-4 h-4" /> {currentJob.location} <span className="text-white/20">•</span> <Briefcase className="w-4 h-4" /> {currentJob.type}
                         </div>
@@ -797,7 +797,7 @@ export default function App() {
                     </div>
                     
                     <div className="flex flex-wrap gap-2 mb-10 min-h-[32px]">
-                      {currentJob.tags.map(tech => (
+                      {(currentJob.tags || []).map(tech => (
                         <span key={tech} className="px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.05] text-xs font-medium text-white/60 hover:text-white/90 hover:bg-white/[0.08] transition-colors">{tech}</span>
                       ))}
                     </div>
@@ -820,12 +820,12 @@ export default function App() {
                       </div>
                       
                       <div className="space-y-3 relative z-10 min-h-[120px]">
-                        {currentJob.matchChecks.map(check => (
+                        {(currentJob.matchChecks || []).map((check, i) => (
                           <div key={check} className="flex items-center justify-between text-sm">
                             <span className="flex items-center gap-3 text-white/70"><CheckCircle2 className="w-4 h-4 text-[#56c2fc]" /> {check}</span>
                           </div>
                         ))}
-                        {currentJob.matchWarnings.map(warning => (
+                        {(currentJob.matchWarnings || []).map((warning, i) => (
                           <div key={warning} className="flex items-center justify-between text-sm">
                             <span className="flex items-center gap-3 text-white/40"><AlertTriangle className="w-4 h-4 text-white/30" /> {warning}</span>
                           </div>
@@ -921,7 +921,7 @@ export default function App() {
                     key={i} 
                     onClick={() => {
                       if (currentUser) {
-                        window.open(job.raw.url || job.raw.sourceUrl, '_blank');
+                        window.open(job.url || job.raw?.sourceUrl || '#', '_blank');
                       } else {
                         navigate('/auth');
                       }
@@ -930,29 +930,29 @@ export default function App() {
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div>
-                        <div className="text-xs text-[#56c2fc] font-medium tracking-wide uppercase mb-1">{job.raw.company}</div>
-                        <h4 className="text-lg font-medium text-white group-hover:text-[#4642ff] transition-colors">{job.raw.title}</h4>
+                        <div className="text-xs text-[#56c2fc] font-medium tracking-wide uppercase mb-1">{job.company || job.raw?.company}</div>
+                        <h4 className="text-lg font-medium text-white group-hover:text-[#4642ff] transition-colors">{job.title || job.raw?.title}</h4>
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-medium text-white">{job.raw.salary?.originalText || "Undisclosed"}</div>
-                        <div className={`text-xs font-medium mt-1 ${job.analysis.matchScore > 70 ? 'text-[#56c2fc]' : job.analysis.matchScore > 30 ? 'text-yellow-500' : 'text-red-400'}`}>{job.analysis.matchScore}% Match</div>
+                        <div className="text-lg font-medium text-white">{job.salary || job.raw?.salary?.originalText || "Undisclosed"}</div>
+                        <div className={`text-xs font-medium mt-1 ${(job.matchScore ?? job.analysis?.matchScore ?? 0) > 70 ? 'text-[#56c2fc]' : (job.matchScore ?? job.analysis?.matchScore ?? 0) > 30 ? 'text-yellow-500' : 'text-red-400'}`}>{(job.matchScore ?? job.analysis?.matchScore ?? 0)}% Match</div>
                       </div>
                     </div>
                     
-                    <div className="text-xs text-white/50 mb-3">{job.raw.location}</div>
+                    <div className="text-xs text-white/50 mb-3">{job.location || job.raw?.location}</div>
 
                     <div className="flex flex-wrap gap-2 mb-3">
-                      {job.raw.skills?.slice(0, 3).map((tag: string) => (
+                      {(job.tags || job.raw?.skills || []).slice(0, 3).map((tag: string) => (
                         <span key={tag} className="px-2 py-1 bg-white/5 rounded text-xs text-white/60">{tag}</span>
                       ))}
                     </div>
 
                     <div className="text-sm text-white/70 italic bg-white/5 p-3 rounded-xl mb-4 border border-white/10">
-                      {job.analysis.whyItMatches || "No match evaluation available."}
+                      {job.analysis?.whyItMatches || "No match evaluation available."}
                     </div>
                     
                     <div className="text-[10px] sm:text-xs text-[#56c2fc] uppercase tracking-wider font-medium mb-1">
-                      Found via {job.raw.source} ↗
+                      Found via {job.source || job.raw?.source} ↗
                     </div>
                     
                     {/* Hover Overlay */}
