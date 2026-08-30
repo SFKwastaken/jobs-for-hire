@@ -1,4 +1,4 @@
-import type { SearchProfile, Job, JobMatchAnalysis, ProcessedJob } from './types';
+import type { SearchProfile, Job, ProcessedJob } from './types';
 import { extractSalaryInfo } from './jobExtractor';
 
 function matchesHardConstraints(profile: SearchProfile, job: Job): boolean {
@@ -60,26 +60,7 @@ function matchesHardConstraints(profile: SearchProfile, job: Job): boolean {
   return true;
 }
 
-const MATCH_SYSTEM_PROMPT = `You are an AI Job Matching Engine.
-Compare the user's SearchProfile with the extracted Job Data.
-Return a STRICT JSON evaluation matching this interface:
-{
-  "matchScore": number (0-100),
-  "matchingSkills": ["skills present in both"],
-  "missingSkills": ["skills in job not in profile"],
-  "whyItMatches": "1-2 sentence explanation of the match",
-  "concerns": ["Any warnings e.g. 'salary not disclosed', 'time zone requirement'"],
-  "roleRelevance": number (0-100),
-  "skillRelevance": number (0-100),
-  "experienceFit": number (0-100),
-  "remoteFit": number (0-100),
-  "salaryFit": number (0-100)
-}
 
-CRITICAL RULES:
-1. Do not invent missing skills if the job description doesn't explicitly require them.
-2. If the user requires a specific location and the job is strictly outside of it, set matchScore to 0.
-3. Be objective. 100 means perfect, 50 means weak match.`;
 
 export async function evaluateJobMatches(profile: SearchProfile, jobs: Job[], onProgress?: (msg: string) => void): Promise<ProcessedJob[]> {
   // First, deterministic filter

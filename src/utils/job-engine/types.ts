@@ -78,6 +78,23 @@ export interface JobMatchAnalysis {
 }
 
 export interface ProcessedJob {
-  raw: Job;
-  analysis: JobMatchAnalysis;
+  // New engine fields
+  raw?: Job;
+  analysis?: JobMatchAnalysis;
+
+  // Flat fields (Legacy/Adzuna)
+  title?: string;
+  company?: string;
+  location?: string;
+  type?: string;
+  salary?: any;
+  salarySuffix?: string;
+  tags?: string[];
+  matchScore?: number;
+  matchChecks?: string[];
+  matchWarnings?: string[];
+  source?: string;
+  posted?: string;
+  url?: string;
+  description?: string;
 }
