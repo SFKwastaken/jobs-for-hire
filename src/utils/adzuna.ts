@@ -14,7 +14,7 @@ export interface SearchFilters {
 }
 
 const ADZUNA_APP_ID = (import.meta as any).env?.VITE_ADZUNA_APP_ID;
-const ADZUNA_APP_KEY = (import.meta as any).env?.VITE_ADZUNA_APP_KEY;
+const ADZUNA_APP_KEY = (import.meta as any).env?.VITE_ADZUNA_APP_KEY || (import.meta as any).env?.VITE_ADZUNA_API_KEY;
 const BASE_URL = 'https://api.adzuna.com/v1/api/jobs';
 
 /**
